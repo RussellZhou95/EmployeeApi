@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.*;
 import java.io.IOException;
 @Slf4j
-public class EmployeeFilter implements Filter {
+public class UserFilter implements Filter {
 
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        log.info("Initialize Employee Filter.");
+        log.info("Initialize User Filter.");
         Filter.super.init(filterConfig);
     }
 
