@@ -51,6 +51,10 @@ public class EmployeeController {
 //        return employeeService.getEmployees();
 //    }
 
+    /**
+     * Get all employee
+     * @return
+     */
     @GetMapping
     public List<EmployeeDTO> getEmployeeList() {
         log.info("Get one specific employee");
