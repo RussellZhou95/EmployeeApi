@@ -28,6 +28,10 @@ class MessageRestController {
 //	@Value("${info.foo}")
 //	private String foo;
 
+	/**
+	 * I made first change here
+	 * @return
+	 */
 	@RequestMapping("/message")
 	String getMessage() {
 //		System.out.println(foo);
