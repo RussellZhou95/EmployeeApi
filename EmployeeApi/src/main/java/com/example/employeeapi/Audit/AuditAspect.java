@@ -1,5 +1,6 @@
 package com.example.employeeapi.Audit;
 
+import com.example.employeeapi.annotation.RepeatSubmit;
 import com.example.employeeapi.dto.AuditDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
@@ -43,6 +44,26 @@ public class AuditAspect {
     @Pointcut("execution(* com.example.employeeapi.controller.EmployeeController.getEmployeeList(..))")
     public void getEmployeeList(){}
 
+    @Pointcut(value = "@annotation(repeatSubmit)")
+    public void pointCutNoRepeatSubmit(RepeatSubmit repeatSubmit) {
+
+    }
+
+    @Around("pointCutNoRepeatSubmit(repeatSubmit)")
+    public Object auditFunctinoAnnotation(ProceedingJoinPoint joinPoint, RepeatSubmit repeatSubmit) throws Throwable {
+
+        HttpServletRequest request= ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String type = repeatSubmit.limitType().name();
+        String requestURL = String.valueOf(request.getRequestURL());
+        String remoteAddr = request.getRemoteAddr();
+        if (type.equalsIgnoreCase(RepeatSubmit.TYPE.PARAM.name())) {
+            String key = String.format("%s-%s", requestURL, remoteAddr);
+            System.out.printf("The key is {}", key);
+            // Here you can implement your repeat submission check logic
+            System.out.println("Annotation Type: " + type);
+        }
+        return joinPoint.proceed();
+    }
     @Around("addEmployee() || getEmployeeList()")
     public Object auditFunction(ProceedingJoinPoint joinPoint) throws Throwable {
 
